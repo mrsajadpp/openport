@@ -1,5 +1,8 @@
 import socket
 import argparse
+import sys
+import time
+import threading
 
 # ANSI escape code for yellow color
 YELLOW = "\033[33m"
@@ -30,15 +33,26 @@ def scan_ports(target_ip, start_port=1, end_port=1024):
     print(f"Scanning {target_ip} for open ports...\n")
 
     open_ports = []
+    progress_animation = ['|', '/', '-', '\\']
 
+    # Port scanning with animation
     for port in range(start_port, end_port + 1):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(1)
+
+        # Show scanning animation in terminal
+        sys.stdout.write(f"\rScanning port {port} {progress_animation[port % 4]}")  # Updating the animation
+        sys.stdout.flush()
 
         result = sock.connect_ex((target_ip, port))
         if result == 0:
             open_ports.append(port)
         sock.close()
+
+        # Adding a small delay for the animation to be visible
+        time.sleep(0.1)
+
+    sys.stdout.write("\rScan complete!                \n")  # Clear the last animation frame
 
     if open_ports:
         print(f"Open ports on {target_ip}: {open_ports}")
@@ -62,7 +76,11 @@ def main():
 
     args = parser.parse_args()
 
-    scan_ports(args.target_ip, args.start_port, args.end_port)
+    # Run the port scanning in a separate thread to keep the UI responsive
+    scanning_thread = threading.Thread(
+        target=scan_ports, args=(args.target_ip, args.start_port, args.end_port)
+    )
+    scanning_thread.start()
 
 
 if __name__ == "__main__":
