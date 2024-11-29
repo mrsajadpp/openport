@@ -53,16 +53,6 @@ python openport.py 192.168.1.1 --start-port 100 --end-port 200
 
 This will scan ports 100 to 200 on the IP address `192.168.1.1`.
 
-## Logo
-
-Upon running the script, you will see the following logo printed in yellow:
-
-```
-░█▀█░█▀█░█▀▀░█▀█░█▀█░█▀█░█▀▄░▀█▀
-░█░█░█▀▀░█▀▀░█░█░█▀▀░█░█░█▀▄░░█░
-░▀▀▀░▀░░░▀▀▀░▀░▀░▀░░░▀▀▀░▀░▀░░▀░
-```
-
 ## Credit
 
 This tool was developed by [mrsajadpp](https://github.com/mrsajadpp).
